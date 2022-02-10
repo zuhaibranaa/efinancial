@@ -10,11 +10,11 @@ class Jobs(scrapy.Spider):
         end_page = int(input('Enter Your End Range :  '))
     if int(start_page) == 1:
         start_urls = [
-            'https://www.efinancialcareers.hk/jobs-Technology.s019',
+            'https://www.efinancialcareers.hk/jobs-Technology-Hong_Kong.os01901819730',
         ]
     else:
         start_urls = [
-            f'https://www.efinancialcareers.hk/jobs-Technology.s019?jobSearchId=NTBGNDI2MjA2RUU0QjJDNUY1QTEzMDg2ODBGMDQ5NjEuMTY0NDM3ODEwMjE2Mi4xNDU2MjU2NjY0&page={start_page}',
+            f'https://www.efinancialcareers.hk/jobs-Technology-Hong_Kong.os01901819730?jobSearchId=NjVBMTBCRTRGMTc2MzQwMEQ3REQzQjgyMjEzMDYyREYuMTY0NDQ2MDY0OTYyMi40NDA4ODc1NQ%3D%3D&page={start_page}',
         ]
     def parse(self, response):
         cards = response.css('.well')
@@ -24,11 +24,8 @@ class Jobs(scrapy.Spider):
             _id = card.css('a.anchor::attr(id)').extract()[0][3:]
             url = card.css('a::attr(href)').extract()[0]
             company = card.css('.company span::text').extract()[1]
-            date = str(card.css('.updated span::text').extract())[-10:-2].split(' ')
-            if len(date[0]) is 2:
-                date = f'20{date[2]}-{month_dict[date[1]]}-{date[0]}'
-            else:
-                date = f'20{date[2]}-{month_dict[date[1]]}-0{date[0]}'
+            date = str(card.css('.updated span::text').extract())[-11:-2].split(' ')
+            date = f'20{date[2]}-{month_dict[date[1]]}-{date[0]}'
             work = card.css('a span::text').extract()[0]
             price = card.css('.salary span::text').extract()[0]
             # Passing Data To Item
